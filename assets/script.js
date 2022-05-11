@@ -13,6 +13,7 @@ let start = true;
 
 
 q('.reset').addEventListener('click', reset);
+q('.begin').addEventListener('click', begin);
 document.querySelectorAll('.frame').forEach(item =>{
    item.addEventListener('click', itemClick)
 });
@@ -23,7 +24,10 @@ function itemClick(event){
       frames[click] = player
       framesUpdate();
       change();
+   }else{
+       showWinner(info);
    }
+  
    
 }
 function change(){
@@ -59,23 +63,29 @@ function framesUpdate(){
    checkGame();
 
 }
+
 function infoUpdate(){
+    
    q('.info h2').innerHTML = `Jogador "${player}"`;
 }
 
+function showWinner(info){
+   document.querySelector('.info h2').innerHTML = info;
+}
+
 function checkGame(){
-   if (checkWinner('x')){
-      info = `O jogador "X" venceu`;
+   if (checkWinner('X')){
+      info = 'O jogador X venceu';
+      showWinner(info);
       start = false;
-      console.log('x')
-   }else if(checkWinner('o')){
-      info = `O jogador "O" venceu`;
+   }else if(checkWinner('O')){
+      info = 'O jogador O venceu';
+      showWinner(info);
       start = false;
-      console.log('o')
    }else if(isDraw()){
-      info = `Deu empate`;
+      info = 'Deu empate';
+      showWinner(info);
       start = false;
-      console.log('emp')
    }
 }
 function checkWinner(player){
@@ -94,26 +104,25 @@ function checkWinner(player){
    ]
 
    for (const pos in odds) {
-      let array = odds[pos].split(',')
-      let win = array.every((option)=>{
-         if(frames[option] === player){
-            return true;
-         }else{
-            return false;
-         }
-      })
+      let array = odds[pos].split(',');
+      let win = array.every(option => frames[option] === player);
       if(win){
          return true;
       }
    }
    return false;
 }
+
+
 function isDraw(){
-   for(let i in frames){
-      if(frames[i] === ''){
+   for(let frame in frames){
+      if(frames[frame] === ''){
          return false;
       }
    }
    return true;
 }
-reset();
+function begin(){
+   reset();
+   setInterval(checkGame, 500);
+}

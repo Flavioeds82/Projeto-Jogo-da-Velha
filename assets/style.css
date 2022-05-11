@@ -57,3 +57,12 @@ h2{
 .button button:hover{
    background-color:#444 ;
 }
+.container-info{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding-left: 10px;
+}
+.begin{
+   margin: 10px;
+}
